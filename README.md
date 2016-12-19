@@ -1,0 +1,2 @@
+# Splashify
+Beautiful desktop wallpapers
