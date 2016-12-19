@@ -1,0 +1,42 @@
+{
+  "name": "splashify",
+  "productName": "Splashify",
+  "version": "1.0.0",
+  "description": "Beautiful desktop wallpapers",
+  "main": "main.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
+    "dev-start": "cross-env NODE_ENV=development electron .",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "start": "cross-env NODE_ENV=production electron .",
+    "release": "npm run build && ./node_modules/.bin/electron-packager . --icon=./assets/logo/splashify-app-icon --ignore='assets/logo|src|dist/build.js.map' --out=./releases --overwrite --all"
+  },
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "vue-loader": "^10.0.2",
+    "webpack": "^2.1.0-beta.25",
+    "webpack-dev-server": "^2.1.0-beta.0"
+  },
+  "dependencies": {
+    "electron": "^1.4.1",
+    "electron-dl": "^1.5.0",
+    "electron-json-storage": "^2.1.0",
+    "electron-packager": "^8.4.0",
+    "imagesloaded": "^4.1.1",
+    "jimp": "^0.2.27",
+    "jquery": "^3.1.1",
+    "masonry-layout": "^4.1.1",
+    "underscore": "^1.8.3",
+    "unsplash-js": "^4.3.1",
+    "vue": "^2.1.3",
+    "vue-infinite-loading": "next",
+    "vue-resource": "^1.0.3",
+    "vue-template-compiler": "^2.1.3",
+    "wallpaper": "^2.3.0"
+  }
+}
