@@ -2,10 +2,11 @@
   "name": "splashify",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
-    "dev-start": "cross-env NODE_ENV=development ./app/node_modules/.bin/electron ./app",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "start": "cross-env NODE_ENV=production ./app/node_modules/.bin/electron ./app",
-    "release": "npm run build && build --mac --win"
+    "dev-start": "cross-env NODE_ENV=development electron ./app",
+    "prod": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "prod-start": "cross-env NODE_ENV=production electron ./app",
+    "build": "build --mac --win",
+    "release": "npm run prod && npm run build"
   },
   "devDependencies": {
     "7zip-bin-mac": "^1.0.1",
