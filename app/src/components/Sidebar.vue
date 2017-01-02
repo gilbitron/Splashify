@@ -10,6 +10,9 @@
         <a href="#" class="nav-group-item" :class="{ 'active': selectedType == 'latest' }" @click="updateType('latest')">
             <span class="icon icon-picture"></span> Latest
         </a>
+        <a href="#" class="nav-group-item" :class="{ 'active': selectedType == 'search' }" @click="updateType('search')">
+            <span class="icon icon-search"></span> Search
+        </a>
     </nav>
 </template>
 

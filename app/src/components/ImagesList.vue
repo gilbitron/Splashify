@@ -1,6 +1,14 @@
 <template>
     <div class="page-images-list">
         <div class="padded-more">
+            <div v-if="selectedType == 'search'">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Enter search query and hit enter to search..." v-model.lazy.trim="searchQuery" :disabled="isSearching">
+                </div>
+            </div>
+            <div class="no-images-found" v-if="showNoImagesFound">
+                No images found
+            </div>
             <div class="images-list" ref="imagesList">
                 <a href="#" class="image" :style="{ backgroundColor: image.color }" @click="selectImage(image)" v-for="image in images">
                     <img :src="image.urls.small" alt="" class="loading">
@@ -62,13 +70,25 @@
                 isLoading: false,
                 isRefreshingLayout: false,
 				layoutEngine: null,
+                searchQuery: '',
+                searchImagesFound: 0,
+                isSearching: false,
 			}
 		},
 
 		computed: {
 			cacheLabel() {
-				return 'images-' + this.selectedType + '-' + this.perPage + '-' + this.page;
-			}
+                var label = 'images-' + this.selectedType + '-' + this.perPage + '-' + this.page;
+
+                if (this.selectedType == 'search' && this.searchQuery) {
+                    label += '-' + encodeURIComponent(this.searchQuery);
+                }
+
+				return label;
+			},
+            showNoImagesFound() {
+                return this.selectedType == 'search' && this.searchQuery && this.searchImagesFound < 1;
+            }
 		},
 
         created() {
@@ -94,6 +114,9 @@
 
                 if (this.selectedType == 'curated') {
                     promise = this.unsplash.photos.listCuratedPhotos(this.page, this.perPage, 'latest');
+                } else if (this.selectedType == 'search' && this.searchQuery) {
+                    promise = this.unsplash.search.photos(this.searchQuery, this.page, this.perPage);
+                    this.isSearching = true;
                 } else {
                     promise = this.unsplash.photos.listPhotos(this.page, this.perPage, this.selectedType);
                 }
@@ -116,6 +139,11 @@
                         });
             },
             setImages(data) {
+                if (this.selectedType == 'search') {
+                    this.searchImagesFound = data.total ? data.total : 0;
+                    data = data.results;
+                }
+
                 data = this.images.concat(data);
                 this.images = data;
             },
@@ -163,19 +191,28 @@
 
 			selectImage(image) {
                 this.$emit('image-selected', image);
-			}
-        },
-
-		watch: {
-			selectedType: function(newValue, oldValue) {
+			},
+            resetData() {
                 this.images = [];
                 this.page = 1;
                 this.$parent.$refs.mainPane.scrollTop = 0;
                 this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
                 this.layoutEngine = null;
+            }
+        },
 
+		watch: {
+			selectedType: function(newValue, oldValue) {
+                this.searchQuery = '';
+                this.searchImagesFound = 0;
+
+                this.resetData();
 				this.getImages();
-			}
+			},
+            searchQuery: function(newValue, oldValue) {
+                this.resetData();
+				this.getImages();
+            }
 		},
 
         components: {
