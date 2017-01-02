@@ -90,15 +90,30 @@
 	            }.bind(this));
 			},
             fetchImages() {
-                this.unsplash.photos.listPhotos(this.page, this.perPage, this.selectedType)
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        this.setImages(data);
-                        storage.set(this.cacheLabel, data);
-                        this.refreshLayout();
-                    });
+                let promise = null;
+
+                if (this.selectedType == 'curated') {
+                    promise = this.unsplash.photos.listCuratedPhotos(this.page, this.perPage, 'latest');
+                } else {
+                    promise = this.unsplash.photos.listPhotos(this.page, this.perPage, this.selectedType);
+                }
+
+                if (!promise) {
+                    return;
+                }
+
+                promise.then(response => {
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (this.selectedType == 'search') {
+                                this.isSearching = false;
+                            }
+
+                            this.setImages(data);
+                            storage.set(this.cacheLabel, data);
+                            this.refreshLayout();
+                        });
             },
             setImages(data) {
                 data = this.images.concat(data);

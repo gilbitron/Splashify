@@ -26,7 +26,7 @@
 	export default {
 		data() {
 			return {
-                selectedType: 'popular',
+                selectedType: 'curated',
                 selectedImage: null,
                 lastWallpaper: null,
                 currentWallpaper: null,
