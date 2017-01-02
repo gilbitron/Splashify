@@ -6,7 +6,7 @@
     "prod": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "prod-start": "cross-env NODE_ENV=production electron ./app",
     "build": "build --mac --win",
-    "publish": "build --mac --win --publish=onTagOrDraft"
+    "publish": "build --mac --win --publish \"onTagOrDraft\""
   },
   "devDependencies": {
     "7zip-bin-mac": "^1.0.1",
