@@ -33,7 +33,7 @@ function createWindow() {
 
     var url = 'file://' + path.join(__dirname, 'index.html');
     if (process.env.NODE_ENV === 'development') {
-        url = 'http://localhost:8080/app/index.html';
+        url = 'http://localhost:8080/index.html';
     }
 
     mainWindow.loadURL(url);
