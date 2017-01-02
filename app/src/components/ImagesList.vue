@@ -10,7 +10,10 @@
                 No images found
             </div>
             <div class="images-list" ref="imagesList">
-                <a href="#" class="image" :style="{ backgroundColor: image.color }" @click="selectImage(image)" v-for="image in images">
+                <div class="overlay" v-show="showLoader">
+                    <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+                </div>
+                <a href="#" class="image" :style="{ backgroundColor: image.color }" @click="selectImage(image)" v-for="image in images" v-if="image">
                     <img :src="image.urls.small" alt="" class="loading">
                 </a>
             </div>
@@ -20,6 +23,10 @@
 </template>
 
 <style>
+    .images-list {
+        position: relative;
+        min-height: 250px;
+    }
 	.images-list .image {
 		display: block;
 		text-decoration: none;
@@ -47,6 +54,18 @@
     }
     @media screen and (max-width: 600px) {
         .images-list .image { width: calc(100% - 5px); }
+    }
+
+    .images-list .overlay {
+        position: absolute;
+        top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+        background: #fff;
+        z-index: 2;
+        text-align: center;
+        padding: 100px 0;
     }
 </style>
 
@@ -86,6 +105,9 @@
 
 				return label;
 			},
+            showLoader() {
+                return (this.isLoading || this.isSearching || this.isRefreshingLayout) && this.page == 1;
+            },
             showNoImagesFound() {
                 return this.selectedType == 'search' && this.searchQuery && this.searchImagesFound < 1;
             }
