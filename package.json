@@ -5,8 +5,8 @@
     "dev-start": "cross-env NODE_ENV=development electron ./app",
     "prod": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "prod-start": "cross-env NODE_ENV=production electron ./app",
-    "build": "build --mac --win",
-    "publish": "build --mac --win --publish \"onTagOrDraft\""
+    "build": "build -mwl",
+    "publish": "build -mwl --publish \"onTagOrDraft\""
   },
   "devDependencies": {
     "7zip-bin-mac": "^1.0.1",
@@ -24,7 +24,10 @@
     "webpack-dev-server": "^2.2.0-rc.0"
   },
   "build": {
-    "appId": "com.dev7studios.splashify"
+    "appId": "com.dev7studios.splashify",
+    "linux": {
+        "target": ["AppImage", "rpm"]
+    }
   },
   "postinstall": "install-app-deps"
 }
