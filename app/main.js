@@ -5,6 +5,7 @@ const {download} = require('electron-dl');
 const storage = require('electron-json-storage');
 const wallpaper = require('wallpaper');
 const Jimp = require('jimp');
+const {autoUpdater} = require('electron-auto-updater');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -45,6 +46,18 @@ function createWindow() {
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
+
+    require('./updater');
+    mainWindow.webContents.once('did-frame-finish-load', function(event) {
+        if (process.env.NODE_ENV === 'development') {
+            // For testing. Pretend there is an update.
+            setTimeout(function() {
+                autoUpdater.emit('update-downloaded', '', '', '1.0.0', '', '');
+            }, 2000);
+        } else {
+            autoUpdater.checkForUpdates();
+        }
+    });
 }
 
 app.on('ready', function() {
@@ -67,6 +80,10 @@ app.on('activate', function() {
     if (mainWindow === null) {
         createWindow();
     }
+});
+
+ipcMain.on('install-update', (event) => {
+    autoUpdater.quitAndInstall();
 });
 
 ipcMain.on('download-image', (event, imageUrl) => {
