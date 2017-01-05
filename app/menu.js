@@ -39,8 +39,12 @@ const template = [
     role: 'help',
     submenu: [
       {
-        label: 'Learn More',
+        label: 'Splashify Website',
         click () { require('electron').shell.openExternal('https://splashify.net') }
+      },
+      {
+        label: 'Report an Issue...',
+        click () { require('electron').shell.openExternal('https://github.com/gilbitron/Splashify/issues/new') }
       }
     ]
   }
