@@ -1,5 +1,10 @@
 # Splashify Changelog
 
+**v1.2.0 - 5 Jan 2017**
+* [New] Added automatic updates
+* [New] Added linux builds
+* [Changed] Updated help links
+
 **v1.1.0 - 2 Jan 2017**
 * [New] Added a new "Curated" default tab
 * [New] Added a new "Search" tab
