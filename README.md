@@ -3,7 +3,7 @@
 Choose from thousands of stunning photos taken by amazing photographers from
 around the world and set them as your desktop background in a single click.
 
-![Splashify](https://cloud.githubusercontent.com/assets/203882/21812743/d1722a0e-d74b-11e6-8599-19feed402d95.png)
+![Splashify](https://cloud.githubusercontent.com/assets/203882/21812815/1e001caa-d74c-11e6-9ec2-658939d963ce.png)
 
 ## Download & Install
 
