@@ -52,7 +52,7 @@ function createWindow() {
         if (process.env.NODE_ENV === 'development') {
             // For testing. Pretend there is an update.
             setTimeout(function() {
-                autoUpdater.emit('update-downloaded', '', '', '1.0.0', '', '');
+                autoUpdater.emit('update-downloaded', '', '', '2.0.0', '', '');
             }, 2000);
         } else {
             autoUpdater.checkForUpdates();
