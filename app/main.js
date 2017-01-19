@@ -62,6 +62,7 @@ function createWindow() {
 
 app.on('ready', function() {
     require('./electron/menu');
+    require('./electron/connection');
     require('./electron/image');
 
     storage.clear(function(error) {

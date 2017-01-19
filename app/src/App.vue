@@ -7,6 +7,17 @@
                     <strong>{{ updateAvailable }}</strong>
                     <button class="btn btn-positive" @click="installUpdate">Install &amp; Restart</button>
                 </div>
+                <transition name="fade">
+                    <div class="is-offline" v-if="isOffline">
+                        <div>
+                            <i class="fa fa-wifi" aria-hidden="true"></i>
+                            <p>
+                                Splashify requires an internet connection to work.<br>
+                                Please connect to the internet.
+                            </p>
+                        </div>
+                    </div>
+                </transition>
             </div>
             <div class="pane main-pane" ref="mainPane">
         		<ImagesList :selected-type="selectedType" :selected-image="selectedImage" v-on:image-selected="imageSelected"></ImagesList>
@@ -30,6 +41,28 @@
         line-height: 24px;
     }
     .update-available button { margin-left: 5px; }
+
+    .is-offline {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9999;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .is-offline div { text-align: center; }
+    .is-offline p { margin: 0; }
+    .is-offline .fa {
+        font-size: 100px;
+        margin-bottom: 20px;
+    }
+
+    .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease-out; }
+    .fade-enter, .fade-leave-to { opacity: 0; }
 </style>
 
 <script>
@@ -47,6 +80,7 @@
                 lastWallpaper: null,
                 currentWallpaper: null,
                 updateAvailable: false,
+                isOffline: false,
 			}
 		},
 
@@ -57,6 +91,14 @@
             });
             ipcRenderer.on('update-available', (event, message) => {
                 this.updateAvailable = message;
+            });
+            ipcRenderer.send('get-connection-status');
+            ipcRenderer.on('connection-status', (event, status) => {
+                if (status == 'offline') {
+                    this.isOffline = true;
+                } else {
+                    this.isOffline = false;
+                }
             });
         },
 
