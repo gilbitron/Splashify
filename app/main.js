@@ -1,10 +1,6 @@
 const electron = require('electron');
 const path = require('path');
-const fs = require('fs');
-const {download} = require('electron-dl');
 const storage = require('electron-json-storage');
-const wallpaper = require('wallpaper');
-const Jimp = require('jimp');
 const {autoUpdater} = require('electron-auto-updater');
 
 const app = electron.app;
@@ -62,6 +58,7 @@ function createWindow() {
 
 app.on('ready', function() {
     require('./electron/menu');
+    require('./electron/image');
 
     storage.clear(function(error) {
         if (error) throw error;
@@ -84,56 +81,4 @@ app.on('activate', function() {
 
 ipcMain.on('install-update', (event) => {
     autoUpdater.quitAndInstall();
-});
-
-ipcMain.on('download-image', (event, imageUrl) => {
-    let basePath = path.join(app.getPath('pictures'), 'Splashify');
-
-    // Create Splashify dir if it doesn't exist
-    try {
-        fs.accessSync(basePath, fs.F_OK);
-    } catch (e) {
-        fs.mkdir(basePath);
-    }
-
-    let imagePath = basePath + path.sep + path.basename(imageUrl) + '.jpeg';
-
-    // Delete existing image if it exists
-    try {
-        fs.accessSync(imagePath, fs.F_OK);
-        fs.unlinkSync(imagePath);
-    } catch (e) {}
-
-    download(BrowserWindow.getFocusedWindow(), imageUrl, {directory: basePath})
-        .then(dl => {
-            event.sender.send('image-downloaded', dl.getSavePath());
-        })
-        .catch(console.error);
-});
-
-ipcMain.on('get-wallpaper', (event) => {
-    wallpaper.get()
-        .then(imagePath => {
-            event.sender.send('current-wallpaper', imagePath);
-        })
-        .catch(console.error);
-});
-
-ipcMain.on('set-wallpaper', (event, imagePath, displayId) => {
-    // Resize image
-    Jimp.read(imagePath, (err, image) => {
-        if (err) throw err;
-
-        const {width, height} = electron.screen.getPrimaryDisplay().size;
-
-        image.cover(width, height)
-             .quality(100)
-             .write(imagePath);
-
-        wallpaper.set(imagePath)
-                 .then(() => {
-                     event.sender.send('wallpaper-updated', imagePath);
-                 })
-                 .catch(console.error);
-    });
 });
