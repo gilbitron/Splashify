@@ -47,7 +47,7 @@ function createWindow() {
         mainWindow = null;
     });
 
-    require('./updater');
+    require('./electron/updater');
     mainWindow.webContents.once('did-frame-finish-load', function(event) {
         if (process.env.NODE_ENV === 'development') {
             // For testing. Pretend there is an update.
@@ -61,7 +61,7 @@ function createWindow() {
 }
 
 app.on('ready', function() {
-    require('./menu');
+    require('./electron/menu');
 
     storage.clear(function(error) {
         if (error) throw error;
