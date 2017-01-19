@@ -7,7 +7,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
-let mainWindow;
+let windows = [];
 
 function createWindow() {
     const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -21,12 +21,14 @@ function createWindow() {
         windowHeight = height;
     }
 
-    mainWindow = new BrowserWindow({
+    var mainWindow = new BrowserWindow({
         width: windowWidth,
         height: windowHeight,
         minWidth: 500,
         minHeight: 500
     });
+
+    windows.push(mainWindow);
 
     var url = 'file://' + path.join(__dirname, 'index.html');
     if (process.env.NODE_ENV === 'development') {
@@ -40,6 +42,8 @@ function createWindow() {
     }
 
     mainWindow.on('closed', function() {
+        var index = windows.indexOf(mainWindow);
+        windows.splice(index, 1);
         mainWindow = null;
     });
 
@@ -74,7 +78,7 @@ app.on('window-all-closed', function() {
 app.on('activate', function() {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (mainWindow === null) {
+    if (windows.length < 1) {
         createWindow();
     }
 });
