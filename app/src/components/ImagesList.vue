@@ -1,6 +1,9 @@
 <template>
     <div class="page-images-list">
         <div class="padded-more">
+            <div class="error-alert" v-if="error">
+                There was an error fetching images. <button class="btn btn-positive" @click="retry">Retry</button>
+            </div>
             <div v-if="selectedType == 'search'">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Enter search query and hit enter to search..." v-model.lazy.trim="searchQuery" :disabled="isSearching">
@@ -67,6 +70,20 @@
         text-align: center;
         padding: 100px 0;
     }
+
+    .error-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 999;
+        padding: 10px 15px;
+        background: #fc605b;
+        color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 1px 10px rgba(0,0,0,0.2);
+        line-height: 24px;
+    }
+    .error-alert button { margin-left: 5px; }
 </style>
 
 <script>
@@ -92,6 +109,7 @@
                 searchQuery: '',
                 searchImagesFound: 0,
                 isSearching: false,
+                error: null,
 			}
 		},
 
@@ -158,6 +176,11 @@
                             this.setImages(data);
                             storage.set(this.cacheLabel, data);
                             this.refreshLayout();
+                        })
+                        .catch(error => {
+                            this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+                            this.error = error;
+                            console.log(this.error);
                         });
             },
             setImages(data) {
@@ -176,6 +199,10 @@
                 }
 
                 this.page++;
+                this.getImages();
+            },
+            retry() {
+                this.error = null;
                 this.getImages();
             },
 

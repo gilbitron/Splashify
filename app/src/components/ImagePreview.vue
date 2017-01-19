@@ -1,6 +1,10 @@
 <template>
 	<div class="page-image-preview" v-if="selectedImage">
         <div class="image-preview">
+			<div class="error-alert" v-if="error">
+                There was an error setting the wallpaper. <button class="btn btn-positive" @click="closeError">Close</button>
+            </div>
+
 			<div class="padded-more">
 				<div class="meta clearfix">
 	                <div class="meta-right">
@@ -106,6 +110,7 @@
                 downloadingImage: false,
 				processingStatus: '',
 				screenSize: '',
+				error: null,
 			}
 		},
 
@@ -142,6 +147,12 @@
             ipcRenderer.on('wallpaper-updated', (event, arg) => {
                 this.wallpaperUpdated(arg);
             });
+			ipcRenderer.on('image-error', (event, arg) => {
+				this.error = arg;
+				this.processingStatus = '';
+				this.downloadingImage = false;
+                console.log(this.error);
+            });
         },
 
         methods: {
@@ -172,7 +183,11 @@
 				this.processingStatus = '';
 				this.$emit('wallpaper-updated', imagePath);
 				this.downloadingImage = false;
-            }
+            },
+
+			closeError() {
+				this.error = null;
+			}
         },
 
         watch: {
