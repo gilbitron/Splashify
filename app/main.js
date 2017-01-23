@@ -65,8 +65,17 @@ app.on('ready', function() {
     require('./electron/connection');
     require('./electron/image');
 
-    storage.clear(function(error) {
+    // Clear cached data
+    storage.keys(function(error, keys) {
         if (error) throw error;
+
+        for (var key of keys) {
+            if (key.startsWith('images-')) {
+                storage.remove(key, function(error) {
+                    if (error) throw error;
+                });
+            }
+        }
     });
 
     createWindow();
