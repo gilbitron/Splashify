@@ -11,9 +11,6 @@
 						<!--select class="form-control display-list" v-model="selectedDisplay">
 							<option :value="display.id" v-for="(display, index) in displays">{{ index + 1 }}. {{ display.size.width }} x {{ display.size.height }}</option>
 						</select-->
-						<div class="screen-size">
-							{{ screenSize }}
-						</div>
 						<div class="btn-group">
 							<button class="btn btn-large btn-default" :class="{ 'active': isCurrentWallpaper }" @click="setWallpaper">
 								<span class="icon icon-monitor"></span>&nbsp;{{ setWallpaperButtonText }}
@@ -25,6 +22,10 @@
 	                </div>
 	                <div class="meta-left">
 	                    Source: <a href="#" @click="openLink(selectedImage.user.links.html)">{{ selectedImage.user.name }}</a>
+						<span class="image-size">{{ imageSize }}</span>
+						<span class="screen-size">
+							(will be resized to {{ screenSize }})
+						</span>
 	                </div>
 				</div>
 			</div>
@@ -80,12 +81,9 @@
 		display: inline-block;
 		width: auto;
 	}
-	.image-preview .screen-size {
-		display: inline-block;
-		vertical-align: middle;
-		margin: 0 10px;
-		color: #999;
-	}
+	.image-preview .image-size,
+	.image-preview .screen-size { color: #999; }
+	.image-preview .image-size { margin-left: 10px; }
 
 	.image-preview .is-loading {
 		text-align: center;
@@ -110,6 +108,7 @@
                 downloadingImage: false,
 				processingStatus: '',
 				screenSize: '',
+				imageSize: '',
 				error: null,
 			}
 		},
@@ -193,6 +192,7 @@
         watch: {
 			selectedImage: function(newValue, oldValue) {
 				if (newValue) {
+					this.imageSize = newValue.width + 'x' + newValue.height;
                     this.isLoadingImage = true;
 
                     this.$nextTick(() => {
