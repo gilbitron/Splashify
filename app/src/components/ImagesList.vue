@@ -153,12 +153,12 @@
                 let promise = null;
 
                 if (this.selectedType == 'curated') {
-                    promise = this.unsplash.photos.listCuratedPhotos(this.page, this.perPage, 'latest');
+                    promise = this.unsplashListCuratedPhotos(this.page, this.perPage, 'latest');
                 } else if (this.selectedType == 'search' && this.searchQuery) {
-                    promise = this.unsplash.search.photos(this.searchQuery, this.page, this.perPage);
+                    promise = this.unsplashSearchPhotos(this.searchQuery, this.page, this.perPage);
                     this.isSearching = true;
                 } else {
-                    promise = this.unsplash.photos.listPhotos(this.page, this.perPage, this.selectedType);
+                    promise = this.unsplashListPhotos(this.page, this.perPage, this.selectedType);
                 }
 
                 if (!promise) {
@@ -169,6 +169,10 @@
                             return response.json();
                         })
                         .then(data => {
+                            if (data.errors) {
+                                throw data.errors;
+                            }
+
                             if (this.selectedType == 'search') {
                                 this.isSearching = false;
                             }

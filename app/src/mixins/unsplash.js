@@ -1,17 +1,36 @@
-import Unsplash from 'unsplash-js';
+import fetch from 'node-fetch';
+import packageJson from '../../package.json';
 
 export default {
 	data() {
 		return {
-			unsplash: null
+			apiOptions: {
+				headers: {
+					'User-Agent': 'Splashify v' + packageJson.version
+				}
+			}
 		}
 	},
 
-	created: function () {
-		this.unsplash = new Unsplash({
-			applicationId: '13f754bdafa2df3257c35acdcfcf022f071aff0a69c81f6099eab5c8c9e4b4e9',
-			secret: '82d7c21a906db1507537c679d5a62ec6d63854ecdf20cf049de234f2b986fce1',
-			callbackUrl: 'urn:ietf:wg:oauth:2.0:oob'
-		});
+	computed: {
+		apiBase() {
+			if (process.env.NODE_ENV === 'development') {
+				return 'http://api.splashify.dev';
+			}
+
+			return 'https://api.splashify.net';
+		}
+	},
+
+	methods: {
+		unsplashListPhotos(page, perPage, orderBy) {
+			return fetch(this.apiBase + '/photos?page=' + page + '&per_page=' + perPage + '&order_by=' + orderBy, this.apiOptions);
+		},
+		unsplashListCuratedPhotos(page, perPage, orderBy) {
+			return fetch(this.apiBase + '/photos/curated?page=' + page + '&per_page=' + perPage + '&order_by=' + orderBy, this.apiOptions);
+		},
+		unsplashSearchPhotos(query, page, perPage) {
+			return fetch(this.apiBase + '/search/photos?query=' + query + '&page=' + page + '&per_page=' + perPage, this.apiOptions);
+		}
 	}
 }
