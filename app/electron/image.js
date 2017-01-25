@@ -50,7 +50,10 @@ ipcMain.on('set-wallpaper', (event, imagePath, displayId) => {
     // Resize image
     Jimp.read(imagePath)
 		.then(image => {
-	        const {width, height} = electron.screen.getPrimaryDisplay().size;
+            const display = electron.screen.getPrimaryDisplay();
+			let {width, height} = display.size;
+	        width *= display.scaleFactor;
+	        height *= display.scaleFactor;
 
 	        image.cover(width, height)
 	             .quality(100)

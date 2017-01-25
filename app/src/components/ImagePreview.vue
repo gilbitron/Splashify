@@ -137,8 +137,9 @@
 			//this.displays = electron.screen.getAllDisplays();
 			//this.selectedDisplay = this.displays[0].id;
 
-			const {width, height} = electron.screen.getPrimaryDisplay().size;
-			this.screenSize = width + 'x' + height;
+			const display = electron.screen.getPrimaryDisplay();
+			const {width, height} = display.size;
+			this.screenSize = (width * display.scaleFactor) + 'x' + (height * display.scaleFactor);
 
             ipcRenderer.on('image-downloaded', (event, arg) => {
                 this.imageDownloaded(arg);
