@@ -21,7 +21,8 @@
 						</div>
 	                </div>
 	                <div class="meta-left">
-	                    Source: <a href="#" @click="openLink(selectedImage.user.links.html)">{{ selectedImage.user.name }}</a>
+	                    <a href="#" @click="openLink(selectedImage.user.links.html)">{{ selectedImage.user.name }}</a> /
+	                    <a href="#" @click="openLink('https://unsplash.com/')">Unsplash</a>
 						<span class="image-size">{{ imageSize }}</span>
 						<span class="screen-size">
 							(will be resized to {{ screenSize }})
