@@ -23,5 +23,4 @@ and only submit **1 feature/fix per pull request**. Pull requests containing mul
 
 ## Credits
 
-Splashify was created by [Gilbert Pellegrom](http://gilbert.pellegrom.me) from
-[Dev7studios](http://dev7studios.co). Released under the MIT license.
+Splashify was created by [Gilbert Pellegrom](https://gilbitron.me) from [Dev7studios](https://dev7studios.co). Released under the MIT license.
