@@ -31,6 +31,9 @@ export default {
         },
         unsplashSearchPhotos(query, page, perPage) {
             return fetch(this.apiBase + '/search/photos?query=' + query + '&page=' + page + '&per_page=' + perPage, this.apiOptions);
+        },
+        usplashDownloadEvent(photoId) {
+            return fetch(this.apiBase + '/photos/' + photoId + '/download', this.apiOptions);
         }
     }
 }

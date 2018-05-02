@@ -21,8 +21,8 @@
                         </div>
                     </div>
                     <div class="meta-left">
-                        <a href="#" @click="openLink(selectedImage.user.links.html)">{{ selectedImage.user.name }}</a> /
-                        <a href="#" @click="openLink('https://unsplash.com/')">Unsplash</a>
+                        <a href="#" @click="openLink(selectedImage.user.links.html + '?utm_source=splashify&utm_medium=referral')">{{ selectedImage.user.name }}</a> /
+                        <a href="#" @click="openLink('https://unsplash.com/?utm_source=splashify&utm_medium=referral')">Unsplash</a>
                         <span class="image-size">{{ imageSize }}</span>
                         <span class="screen-size">
                             (will be resized to {{ screenSize }})
@@ -96,10 +96,12 @@
     import path from 'path';
     import electron from 'electron';
     import {ipcRenderer, shell} from 'electron';
+    import unsplash from '../mixins/unsplash';
     import imagesLoaded from 'imagesloaded';
 
     export default {
         props: ['selectedImage', 'currentWallpaper'],
+        mixins: [unsplash],
 
         data() {
             return {
@@ -175,6 +177,8 @@
                 this.downloadingImage = true;
                 this.processingStatus = 'Downloading...';
                 ipcRenderer.send('download-image', this.selectedImage.urls.raw);
+
+                this.usplashDownloadEvent(this.selectedImage.id);
             },
             imageDownloaded(imagePath) {
                 this.processingStatus = 'Processing...';
