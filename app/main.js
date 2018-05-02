@@ -2,12 +2,17 @@ const electron = require('electron');
 const path = require('path');
 const storage = require('electron-json-storage');
 const {autoUpdater} = require('electron-auto-updater');
+const log = require('electron-log');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
 let windows = [];
+
+process.on('uncaughtException', error => {
+    log.error(error);
+});
 
 function createWindow() {
     const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
