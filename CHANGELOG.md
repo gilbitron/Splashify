@@ -1,5 +1,8 @@
 # Splashify Changelog
 
+**v1.3.3** - 2 May 2018
+* [Changed] Satisfy Unsplash API guidelines
+
 **v1.3.2** - 21 Jun 2017
 * [Changed] Improved image/screen resolution messaging
 * [Fixed] Use correct resolution for HiDPI screens
