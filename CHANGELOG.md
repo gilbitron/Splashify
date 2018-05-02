@@ -1,5 +1,8 @@
 # Splashify Changelog
 
+**v1.3.4** - 2 May 2018
+* [Fixed] Missing files in executables
+
 **v1.3.3** - 2 May 2018
 * [Changed] Satisfy Unsplash API guidelines
 
