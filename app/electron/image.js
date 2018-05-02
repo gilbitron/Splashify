@@ -32,8 +32,8 @@ ipcMain.on('download-image', (event, imageUrl) => {
             event.sender.send('image-downloaded', dl.getSavePath());
         })
         .catch(error => {
-			event.sender.send('image-error', error);
-		});
+            event.sender.send('image-error', error);
+        });
 });
 
 ipcMain.on('get-wallpaper', (event) => {
@@ -41,33 +41,33 @@ ipcMain.on('get-wallpaper', (event) => {
         .then(imagePath => {
             event.sender.send('current-wallpaper', imagePath);
         })
-		.catch(error => {
-			event.sender.send('image-error', error);
-		});
+        .catch(error => {
+            event.sender.send('image-error', error);
+        });
 });
 
 ipcMain.on('set-wallpaper', (event, imagePath, displayId) => {
     // Resize image
     Jimp.read(imagePath)
-		.then(image => {
+        .then(image => {
             const display = electron.screen.getPrimaryDisplay();
-			let {width, height} = display.size;
-	        width *= display.scaleFactor;
-	        height *= display.scaleFactor;
+            let {width, height} = display.size;
+            width *= display.scaleFactor;
+            height *= display.scaleFactor;
 
-	        image.cover(width, height)
-	             .quality(100)
-	             .write(imagePath);
+            image.cover(width, height)
+                 .quality(100)
+                 .write(imagePath);
 
-	        wallpaper.set(imagePath)
-	                 .then(() => {
-	                     event.sender.send('wallpaper-updated', imagePath);
-	                 })
-					 .catch(error => {
-			 			event.sender.send('image-error', error);
-			 		 });
-	    })
-		.catch(error => {
-			event.sender.send('image-error', error);
-		});
+            wallpaper.set(imagePath)
+                     .then(() => {
+                         event.sender.send('wallpaper-updated', imagePath);
+                     })
+                     .catch(error => {
+                         event.sender.send('image-error', error);
+                      });
+        })
+        .catch(error => {
+            event.sender.send('image-error', error);
+        });
 });

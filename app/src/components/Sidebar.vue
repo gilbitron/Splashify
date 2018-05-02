@@ -17,13 +17,13 @@
 </template>
 
 <script>
-	export default {
-		props: ['selectedType'],
+    export default {
+        props: ['selectedType'],
 
         methods: {
             updateType(type) {
                 this.$emit('type-updated', type);
             }
         }
-	}
+    }
 </script>

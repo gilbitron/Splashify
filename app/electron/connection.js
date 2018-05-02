@@ -6,11 +6,11 @@ const ipcMain = electron.ipcMain;
 const connection = new ElectronOnline();
 
 connection.on('online', () => {
-	notifyConnectionStatus();
+    notifyConnectionStatus();
 });
 
 connection.on('offline', () => {
-	notifyConnectionStatus();
+    notifyConnectionStatus();
 });
 
 ipcMain.on('get-connection-status', (event) => {
@@ -18,5 +18,5 @@ ipcMain.on('get-connection-status', (event) => {
 });
 
 function notifyConnectionStatus() {
-	util.webContentsSend('connection-status', connection.status.toLowerCase());
+    util.webContentsSend('connection-status', connection.status.toLowerCase());
 }

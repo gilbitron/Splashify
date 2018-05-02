@@ -20,11 +20,11 @@
                 </transition>
             </div>
             <div class="pane main-pane" ref="mainPane">
-        		<ImagesList :selected-type="selectedType" :selected-image="selectedImage" v-on:image-selected="imageSelected"></ImagesList>
+                <ImagesList :selected-type="selectedType" :selected-image="selectedImage" v-on:image-selected="imageSelected"></ImagesList>
                 <ImagePreview :selected-image="selectedImage" :current-wallpaper="currentWallpaper" v-on:wallpaper-updated="wallpaperUpdated" v-on:image-closed="imageClosed"></ImagePreview>
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <style>
@@ -72,21 +72,21 @@
     import ImagesList from './components/ImagesList.vue';
     import ImagePreview from './components/ImagePreview.vue';
 
-	export default {
-		data() {
-			return {
+    export default {
+        data() {
+            return {
                 selectedType: 'curated',
                 selectedImage: null,
                 lastWallpaper: null,
                 currentWallpaper: null,
                 updateAvailable: false,
                 isOffline: false,
-			}
-		},
+            }
+        },
 
         created() {
             ipcRenderer.send('get-wallpaper');
-			ipcRenderer.on('current-wallpaper', (event, arg) => {
+            ipcRenderer.on('current-wallpaper', (event, arg) => {
                 this.currentWallpaper = arg;
             });
             ipcRenderer.on('update-available', (event, message) => {
@@ -127,5 +127,5 @@
             ImagesList,
             ImagePreview
         }
-	}
+    }
 </script>

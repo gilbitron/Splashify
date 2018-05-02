@@ -30,20 +30,20 @@
         position: relative;
         min-height: 250px;
     }
-	.images-list .image {
-		display: block;
-		text-decoration: none;
+    .images-list .image {
+        display: block;
+        text-decoration: none;
         width: calc(20% - 5px);
-		margin: 0 5px 5px 0;
-	}
+        margin: 0 5px 5px 0;
+    }
 
-	.images-list .image img {
-		display: block;
-		width: 100%;
-		height: auto;
+    .images-list .image img {
+        display: block;
+        width: 100%;
+        height: auto;
         opacity: 1;
         transition: opacity 0.3s ease-out;
-	}
+    }
     .images-list .image img.loading { opacity: 0; }
 
     @media screen and (max-width: 1800px) {
@@ -62,9 +62,9 @@
     .images-list .overlay {
         position: absolute;
         top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         background: #fff;
         z-index: 2;
         text-align: center;
@@ -91,64 +91,64 @@
     import unsplash from '../mixins/unsplash';
     import storage from 'electron-json-storage';
     import Masonry from 'masonry-layout';
-	import imagesLoaded from 'imagesloaded';
+    import imagesLoaded from 'imagesloaded';
     import InfiniteLoading from 'vue-infinite-loading';
 
-	export default {
-		props: ['selectedType', 'selectedImage'],
+    export default {
+        props: ['selectedType', 'selectedImage'],
         mixins: [util, unsplash],
 
-		data() {
-			return {
+        data() {
+            return {
                 images: [],
                 page: 1,
-				perPage: 20,
+                perPage: 20,
                 isLoading: false,
                 isRefreshingLayout: false,
-				layoutEngine: null,
+                layoutEngine: null,
                 searchQuery: '',
                 searchImagesFound: 0,
                 isSearching: false,
                 error: null,
-			}
-		},
+            }
+        },
 
-		computed: {
-			cacheLabel() {
+        computed: {
+            cacheLabel() {
                 var label = 'images-' + this.selectedType + '-' + this.perPage + '-' + this.page;
 
                 if (this.selectedType == 'search' && this.searchQuery) {
                     label += '-' + encodeURIComponent(this.searchQuery);
                 }
 
-				return label;
-			},
+                return label;
+            },
             showLoader() {
                 return (this.isLoading || this.isSearching || this.isRefreshingLayout) && this.page == 1;
             },
             showNoImagesFound() {
                 return this.selectedType == 'search' && this.searchQuery && this.searchImagesFound < 1;
             }
-		},
+        },
 
         created() {
             this.getImages();
         },
 
         methods: {
-			getImages() {
-				this.isLoading = true;
-				storage.get(this.cacheLabel, function(error, data) {
-	                if (error) throw error;
+            getImages() {
+                this.isLoading = true;
+                storage.get(this.cacheLabel, function(error, data) {
+                    if (error) throw error;
 
-	                if (this.objectIsEmpty(data)) {
-	                    this.fetchImages();
-	                } else {
+                    if (this.objectIsEmpty(data)) {
+                        this.fetchImages();
+                    } else {
                         this.setImages(data);
-						this.refreshLayout();
-	                }
-	            }.bind(this));
-			},
+                        this.refreshLayout();
+                    }
+                }.bind(this));
+            },
             fetchImages() {
                 let promise = null;
 
@@ -210,11 +210,11 @@
                 this.getImages();
             },
 
-			refreshLayout() {
+            refreshLayout() {
                 this.isRefreshingLayout = true;
                 this.isLoading = false;
 
-				this.$nextTick(() => {
+                this.$nextTick(() => {
                     if (!this.layoutEngine) {
                         this.layoutEngine = new Masonry(this.$refs.imagesList, {
                             itemSelector: '.image',
@@ -230,21 +230,21 @@
 
                     this.layoutEngine.reloadItems();
 
-					imagesLoaded('.images-list', () => {
+                    imagesLoaded('.images-list', () => {
                         this.layoutEngine.layout();
-					}).on('progress', (instance, image) => {
+                    }).on('progress', (instance, image) => {
                         if(image.isLoaded) {
                             image.img.className = '';
                         }
                     });
 
                     this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
-				});
-			},
+                });
+            },
 
-			selectImage(image) {
+            selectImage(image) {
                 this.$emit('image-selected', image);
-			},
+            },
             resetData() {
                 this.images = [];
                 this.page = 1;
@@ -254,22 +254,22 @@
             }
         },
 
-		watch: {
-			selectedType: function(newValue, oldValue) {
+        watch: {
+            selectedType: function(newValue, oldValue) {
                 this.searchQuery = '';
                 this.searchImagesFound = 0;
 
                 this.resetData();
-				this.getImages();
-			},
+                this.getImages();
+            },
             searchQuery: function(newValue, oldValue) {
                 this.resetData();
-				this.getImages();
+                this.getImages();
             }
-		},
+        },
 
         components: {
             InfiniteLoading,
         }
-	}
+    }
 </script>
