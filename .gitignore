@@ -1,4 +1,4 @@
-app/dist
+app/build
 app/node_modules
 dist
 node_modules
