@@ -3,6 +3,11 @@
         <div class="window-content">
             <div class="pane-sm sidebar">
                 <Sidebar :selected-type="selectedType" v-on:type-updated="updateType"></Sidebar>
+                <div class="v2">
+                    <a href="#" @click="openLink('https://splashify.net/v2?utm_source=splashify_app&utm_medium=app&utm_campaign=v2')">
+                        Splashify v2 is coming!
+                    </a>
+                </div>
                 <div class="update-available" v-if="updateAvailable">
                     <strong>{{ updateAvailable }}</strong>
                     <button class="btn btn-positive" @click="installUpdate">Install &amp; Restart</button>
@@ -29,6 +34,9 @@
 
 <style>
     .main-pane { position: relative; }
+    .v2 {
+        padding: 10px;
+    }
     .update-available {
         position: fixed;
         bottom: 20px;
@@ -67,7 +75,7 @@
 
 <script>
     import electron from 'electron';
-    import {ipcRenderer} from 'electron';
+    import {ipcRenderer, shell} from 'electron';
     import Sidebar from './components/Sidebar.vue';
     import ImagesList from './components/ImagesList.vue';
     import ImagePreview from './components/ImagePreview.vue';
@@ -119,6 +127,9 @@
             },
             installUpdate() {
                 ipcRenderer.send('install-update');
+            },
+            openLink(link) {
+                shell.openExternal(link);
             }
         },
 
