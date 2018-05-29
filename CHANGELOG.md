@@ -1,5 +1,8 @@
 # Splashify Changelog
 
+**v1.3.5** - 29 May 2018
+* [New] Added v2 notice
+
 **v1.3.4** - 2 May 2018
 * [Fixed] Missing files in executables
 
