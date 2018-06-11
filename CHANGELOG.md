@@ -1,5 +1,8 @@
 # Splashify Changelog
 
+**v1.3.6** - 11 June 2018
+* [Changed] Update v2 notice
+
 **v1.3.5** - 29 May 2018
 * [New] Added v2 notice
 
