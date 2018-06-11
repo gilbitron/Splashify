@@ -4,8 +4,8 @@
             <div class="pane-sm sidebar">
                 <Sidebar :selected-type="selectedType" v-on:type-updated="updateType"></Sidebar>
                 <div class="v2">
-                    <a href="#" @click="openLink('https://splashify.net/v2?utm_source=splashify_app&utm_medium=app&utm_campaign=v2')">
-                        Splashify v2 is coming!
+                    <a href="#" @click="openLink('https://splashify.app/?utm_source=splashify_app&utm_medium=app&utm_campaign=v2')">
+                        Splashify v2 is here!
                     </a>
                 </div>
                 <div class="update-available" v-if="updateAvailable">
@@ -36,6 +36,7 @@
     .main-pane { position: relative; }
     .v2 {
         padding: 10px;
+        text-align: center;
     }
     .update-available {
         position: fixed;
